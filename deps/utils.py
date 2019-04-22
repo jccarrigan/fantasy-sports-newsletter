@@ -1,21 +1,7 @@
-import requests
-import time
-import random
+from datetime import datetime, timedelta
 
-def get_request(u):
-    count = 0
-    while count < 10:
-        try:
-            r = requests.get(u)
-            break
-        except:
-            count += 1
-            if count > 10:
-                print("failed to make request")
-                return None
-                break
-            time.sleep(random.randint(5,10))
-    return r
+import pandas as pd
+import tweepy
 
 class twitterApi:
     def __init__(self, consumer_key, consumer_secret, access_token, access_token_secret):
@@ -41,6 +27,7 @@ class twitterApi:
       df = pd.DataFrame(tweets, columns = ['created_at', 'favorite_count', 'favorited', 'retweet_count', 'text', 'id'])
       df['handle'] = handle
       df['text'] = df['text'].apply(lambda x: x.replace(u'\r', u' ') if isinstance(x, str) or isinstance(x, unicode) else x)
+      df['text'] = df['text'].apply(lambda x: x.replace(u'\n', u' ') if isinstance(x, str) or isinstance(x, unicode) else x)
       return df
 
     def get_tweet_list(self, handles):
@@ -56,4 +43,4 @@ class twitterApi:
             print("%s does not exist" % handle)
         else:
           break
-      return pd.concat(tweet_list, axis=0)
+      return pd.concat(tweet_list, axis=0, ignore_index=True)
