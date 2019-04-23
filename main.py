@@ -23,7 +23,10 @@ def nfl_tweets(request):
                          access_token=access_token,
                          access_token_secret=access_token_secret)
 
-    twitter.run(project_id=project, destination_table=destination_table)
+    twitter.run(project_id=project,
+                destination_table=destination_table,
+                owner=owner,
+                slug=slug)
 
 def mlb_tweets(request):
     #gcp
@@ -44,4 +47,7 @@ def mlb_tweets(request):
                          access_token=access_token,
                          access_token_secret=access_token_secret)
 
-    twitter.run(project_id=project, destination_table=destination_table)
+    twitter.run(project_id=project,
+                destination_table=destination_table,
+                owner=owner,
+                slug=slug)
