@@ -23,10 +23,10 @@ class twitterApi:
                                            lang="en",
                                            id=handle,
                                            since=days_since).items(15)]
-      tweets = [[tweet.created_at,tweet.favorite_count, tweet.favorited, tweet.retweet_count, tweet.text, tweet.id] for tweet in timeline]
+      tweets = [[tweet.created_at,tweet.favorite_count, tweet.retweet_count, tweet.text, tweet.id] for tweet in timeline if not tweet.retweeted]
 
       #transform
-      df = pd.DataFrame(tweets, columns = ['created_at', 'favorite_count', 'favorited', 'retweet_count', 'text', 'id'])
+      df = pd.DataFrame(tweets, columns = ['created_at', 'favorite_count', 'retweet_count', 'text', 'id'])
       df['created_at'] = df['created_at'] - timedelta(hours=4)
       df = df[df['created_at'].apply(lambda x: x.strftime('%Y-%m-%d')) == date]
       df['handle'] = handle
